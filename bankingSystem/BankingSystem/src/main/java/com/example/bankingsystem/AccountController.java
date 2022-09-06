@@ -10,20 +10,27 @@ public class AccountController
 {
 	@Autowired
 	AccountRepo repo;
-	@RequestMapping("/")
-	public String home() 
-	{
-		return "home.jsp";
-	}
-	@RequestMapping("/addAccount")
-	public String addAccount(Account account) 
+	
+	
+	@PostMapping("/Account")
+	@ResponseBody
+	public Account addAccount(@RequestBody Account account) 
 	{
 		repo.save(account);
-		return "home.jsp";
+		System.out.println("Account created...");
+		return account;
 	}
-	/*public String addMoney(@RequestParam int amt) {
-		Account acc;
-		double bal = acc.getBalance() +amt;
-		return "add.jsp";
+	/*@PutMapping("/Account/{balance}")
+	public String addMoney(@PathVariable int balance) {
+		Account acc =repo.updateBalance(balance);
+		repo.save(acc);
+		return "Money Added.......";
 	}*/
+	
+	@DeleteMapping("/Account/{customerId}")
+	public String closeAccount(@PathVariable int customerId) {
+		Account acc = repo.getOne(customerId);
+		repo.delete(acc);
+		return "Account  deleted.......";
+	}
 }
